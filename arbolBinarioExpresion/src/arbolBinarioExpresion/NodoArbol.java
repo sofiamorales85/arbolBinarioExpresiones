@@ -6,18 +6,14 @@ package arbolBinarioExpresion;
 public class NodoArbol {
 	private NodoArbol subArbolDerecho;
 	private NodoArbol subArbolIzquierdo;
-	private Object datoNodo;
+	private char datoNodo;
 	
 	
-	public NodoArbol(Object datoNodo) {
-		this.datoNodo = datoNodo;
-		this.subArbolDerecho = null;
-		this.subArbolIzquierdo = null;
-	}
-
-
 	public NodoArbol(char caracterEvaluado) {
 		// TODO Auto-generated constructor stub
+		this.datoNodo = caracterEvaluado;
+		this.subArbolDerecho = null;
+		this.subArbolIzquierdo = null;
 	}
 
 	public NodoArbol getSubArbolDerecho() {
@@ -45,7 +41,7 @@ public class NodoArbol {
 	}
 
 
-	public void setDatoNodo(String datoNodo) {
-		this.datoNodo = datoNodo;
+	public void setDatoNodo(char caracterEvaluado) {
+		this.datoNodo = caracterEvaluado;
 	}	
 }
