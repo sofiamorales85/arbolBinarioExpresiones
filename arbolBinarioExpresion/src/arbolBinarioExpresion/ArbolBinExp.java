@@ -5,6 +5,7 @@ package arbolBinarioExpresion;
  */
 public class ArbolBinExp {
 	NodoArbol raiz;
+	String cadenaIn , cadenaPre, cadenaPos = "";
 
 	public ArbolBinExp() {
 		raiz = null;
@@ -37,49 +38,48 @@ public class ArbolBinExp {
 		}
 	}
 
+	
 	// Metodo para el recorrido preorden RID
-	private String preorden(NodoArbol subArbol, String c) {
-		String cadena = "";
+	private String preOrden(NodoArbol subArbol, String c) {	
 		if (subArbol != null) {
-			cadena = c + subArbol.getDatoNodo().toString() + "\n" + preorden(subArbol.getSubArbolIzquierdo(), c)
-					+ preorden(subArbol.getSubArbolDerecho(), c);
+			c = c + subArbol.getDatoNodo().toString() + " , " + preOrden(subArbol.getSubArbolIzquierdo(), c)+ " , "
+					+ preOrden(subArbol.getSubArbolDerecho(), c);
+			
+			cadenaPre = cadenaPre + c;
 		}
-		return cadena;
+		return cadenaPre;
 	}
 
 	// Metodo para el recorrido inorden IRD
-	private String inorden(NodoArbol subArbol, String c) {
-		String cadena;
-		cadena = "";
+	private String inOrden(NodoArbol subArbol, String c) {
+		
 		if (subArbol != null) {
-			cadena = c + inorden(subArbol.getSubArbolIzquierdo(), c) + subArbol.getDatoNodo().toString() + "\n"
-					+ inorden(subArbol.getSubArbolDerecho(), c);
+			cadenaIn = c + inOrden(subArbol.getSubArbolIzquierdo(), c) + " , " + subArbol.getDatoNodo().toString()  + " , "
+					+ inOrden(subArbol.getSubArbolDerecho(), c);
 		}
-		return cadena;
+		return cadenaIn;
 	}
 
 	// Metodo para recorrido posorden IDR
-	private String posorden(NodoArbol subArbol, String c) {
-		String cadena;
-		cadena = "";
+	private String posOrden(NodoArbol subArbol, String c) {
 		if (subArbol != null) {
-			cadena = c + posorden(subArbol.getSubArbolIzquierdo(), c) + posorden(subArbol.getSubArbolDerecho(), c)
-					+ subArbol.getDatoNodo().toString() + "\n";
+			cadenaPos = c + posOrden(subArbol.getSubArbolIzquierdo(), c)+ " , " + posOrden(subArbol.getSubArbolDerecho(), c)
+					+ subArbol.getDatoNodo().toString();
 		}
-		return cadena;
+		return cadenaPos;
 	}
 
 	public String toString(int a) {
 		String cadena = "";
 		switch (a) {
 		case 0:
-			cadena = preorden(raiz, cadena);
+			cadena = preOrden(raiz, cadena);
 			break;
 		case 1:
-			cadena = inorden(raiz, cadena);
+			cadena = inOrden(raiz, cadena);
 			break;
 		case 2:
-			cadena = posorden(raiz, cadena);
+			cadena = posOrden(raiz, cadena);
 			break;
 		}
 		return cadena;
