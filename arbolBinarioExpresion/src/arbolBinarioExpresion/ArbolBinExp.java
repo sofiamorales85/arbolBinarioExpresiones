@@ -1,4 +1,5 @@
 package arbolBinarioExpresion;
+import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -86,6 +87,7 @@ public class ArbolBinExp {
 		}
 		return cadena;
 	}
+	
 
 	public String toString(int a) {
 		String cadena = "";
@@ -103,28 +105,33 @@ public class ArbolBinExp {
 		return cadena;
 	}
 
-	private int prioridad(char c) {
+	private static int prioridad(char c) {
 		int p = 100;
 		switch (c) {
 		case '^':
-			p = 30;
+			p = 3;
 			break;
 		case '*':
 		case '/':
-			p = 20;
+			p = 2;
 		case '+':
 		case '-':
-			p = 10;
+			p = 1;
 			break;
 		default:
-			p = 0;
+			p = 0; // Operadores no válidos o paréntesis
 		}
 		return p;
 	}
 	
+	
+
+	private static boolean esNumero(String elemento) {
+ 		return elemento.matches("\\d+");
+ 	}
+ 	 
 	//Funcion que verifica si es un operador
 	private static boolean esOperador(char operador) {
-		boolean resultado;
 		 return operador == '+' || operador == '-' || operador == '*' || operador == '/' || operador == '('  || operador == ')' || operador == '^';
 	}
 
@@ -218,29 +225,38 @@ public class ArbolBinExp {
 	 }
 	
 	private double evalua(NodoArbol subArbol) {
-		double resultado = 0;
-		if (!esOperador(subArbol.getDatoNodo().toString().charAt(0))) {
-			return Double.parseDouble(subArbol.getDatoNodo().toString());
-		} else {
-			switch (subArbol.getDatoNodo().toString().charAt(0)) {
-			case '^':
-				resultado = resultado
-						+ Math.pow(evalua(subArbol.getSubArbolIzquierdo()), evalua(subArbol.getSubArbolDerecho()));//pow es la elevación 
-				break;
-			case '*':
-				resultado = resultado + evalua(subArbol.getSubArbolIzquierdo()) * evalua(subArbol.getSubArbolDerecho());
-				break;
-			case '/':
-				resultado = resultado + evalua(subArbol.getSubArbolIzquierdo()) / evalua(subArbol.getSubArbolDerecho());
-				break;
-			case '+':
-				resultado = resultado + evalua(subArbol.getSubArbolIzquierdo()) + evalua(subArbol.getSubArbolDerecho());
-				break;
-			case '-':
-				resultado = resultado + evalua(subArbol.getSubArbolIzquierdo()) - evalua(subArbol.getSubArbolDerecho());
-				break;
-			}
-		}
-		return resultado;
+		char operador = subArbol.getDatoNodo().toString().charAt(0);
+	    double resultado = 0;
+
+	    if (!esOperador(operador)) {
+	        return Double.parseDouble(subArbol.getDatoNodo().toString());
+	    } else {
+	        double izquierdo = evalua(subArbol.getSubArbolIzquierdo());
+	        double derecho = evalua(subArbol.getSubArbolDerecho());
+
+	        switch (operador) {
+	            case '^':
+	                resultado = Math.pow(izquierdo, derecho);
+	                break;
+	            case '*':
+	                resultado = izquierdo * derecho;
+	                break;
+	            case '/':
+	                if (derecho == 0) {
+	                    throw new ArithmeticException("División por cero.");
+	                }
+	                resultado = izquierdo / derecho;
+	                break;
+	            case '+':
+	                resultado = izquierdo + derecho;
+	                break;
+	            case '-':
+	                resultado = izquierdo - derecho;
+	                break;
+	            default:
+	                throw new IllegalArgumentException("Operador desconocido: " + operador);
+	        }
+	    }
+	    return resultado;
 	}
 }
