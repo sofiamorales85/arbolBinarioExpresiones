@@ -42,6 +42,16 @@ public class ArbolBinExp {
 		}
 	}
 
+	public int nodosCompletos(NodoArbol subArbol) {
+	    if (subArbol == null) {
+	        return 0;
+	    } else {
+	        if (subArbol.getSubArbolIzquierdo() != null && subArbol.getSubArbolDerecho() != null) {
+	            return nodosCompletos(subArbol.getSubArbolIzquierdo()) + nodosCompletos(subArbol.getSubArbolDerecho()) + 1;
+	        }
+	        return nodosCompletos(subArbol.getSubArbolIzquierdo())+nodosCompletos(subArbol.getSubArbolDerecho()); 
+	        }
+	}
 
 	// Metodo para el recorrido preorden RID
 	private String preOrden(NodoArbol subArbol, String c) {	
@@ -142,6 +152,7 @@ public class ArbolBinExp {
 			System.out.println("Caracter evaluado :" + caracterEvaluado );
 			charIndividualValor = new NodoArbol(caracterEvaluado);
 			if (!esOperador(caracterEvaluado)) {// Es un número
+				
 				if(!masDigitos) {
 					masDigitos = true;
 					pilaExpresiones.push(charIndividualValor);
