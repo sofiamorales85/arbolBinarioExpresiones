@@ -16,6 +16,10 @@ public class NodoArbol {
 		this.subArbolIzquierdo = null;
 	}
 
+	public NodoArbol(String temporal) {
+		// TODO Auto-generated constructor stub
+	}
+
 	public NodoArbol getSubArbolDerecho() {
 		return subArbolDerecho;
 	}

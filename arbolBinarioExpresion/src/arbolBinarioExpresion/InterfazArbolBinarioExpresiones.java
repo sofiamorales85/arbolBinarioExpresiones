@@ -25,6 +25,7 @@ public class InterfazArbolBinarioExpresiones extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField expresion;
+	private JTextField textResultado;
 
 	/**
 	 * Launch the application.
@@ -113,6 +114,10 @@ public class InterfazArbolBinarioExpresiones extends JFrame {
 					preOrden.setText(arbolBinExpresion.toString(0));
 					inOrden.setText(arbolBinExpresion.toString(1));
 					posOrden.setText(arbolBinExpresion.toString(2));
+					double resultado = arbolBinExpresion.evaluaExpresion();
+					
+					textResultado.setText(String.valueOf(resultado));
+					
 					mensaje.setText("");
 				}
 			}
@@ -135,9 +140,25 @@ public class InterfazArbolBinarioExpresiones extends JFrame {
 		contentPane.add(btnLimpiar);
 		
 		JButton btnSalir = new JButton("Salir");
+		btnSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
 		btnSalir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnSalir.setBounds(891, 34, 85, 21);
 		contentPane.add(btnSalir);
+		
+		JLabel lblResultado = new JLabel("Resultado de evaluación:");
+		lblResultado.setFont(new Font("Lucida Sans Unicode", Font.PLAIN, 12));
+		lblResultado.setBounds(35, 258, 187, 24);
+		contentPane.add(lblResultado);
+		
+		textResultado = new JTextField();
+		textResultado.setBounds(35, 292, 202, 24);
+		contentPane.add(textResultado);
+		textResultado.setColumns(10);
+		textResultado.setEditable(false);
 		
 
 	}

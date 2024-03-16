@@ -1,5 +1,7 @@
 package arbolBinarioExpresion;
 
+import java.awt.Graphics;
+
 /**
  * @author JennyMorales 7690-08-6790
  */
@@ -38,35 +40,38 @@ public class ArbolBinExp {
 		}
 	}
 
-	
+
 	// Metodo para el recorrido preorden RID
 	private String preOrden(NodoArbol subArbol, String c) {	
-		if (subArbol != null) {
-			c = c + subArbol.getDatoNodo().toString() + " , " + preOrden(subArbol.getSubArbolIzquierdo(), c)+ " , "
-					+ preOrden(subArbol.getSubArbolDerecho(), c);
-			
-			cadenaPre = cadenaPre + c;
+		String cadena = "";
+		System.out.println( "cadena +"+ cadenaPre );
+		System.out.println( "c +"+ c );
+		if(subArbol != null) {
+			cadena = c + subArbol.getDatoNodo().toString() + "-" + preOrden(subArbol.getSubArbolIzquierdo(), c)
+				+ preOrden(subArbol.getSubArbolDerecho(), c);
+			System.out.println( "c +"+ c );
 		}
-		return cadenaPre;
+		return cadena;
 	}
 
 	// Metodo para el recorrido inorden IRD
 	private String inOrden(NodoArbol subArbol, String c) {
-		
+		String cadena = "";
 		if (subArbol != null) {
-			cadenaIn = c + inOrden(subArbol.getSubArbolIzquierdo(), c) + " , " + subArbol.getDatoNodo().toString()  + " , "
+			cadena = c + inOrden(subArbol.getSubArbolIzquierdo(), c) + "-" + subArbol.getDatoNodo().toString()
 					+ inOrden(subArbol.getSubArbolDerecho(), c);
 		}
-		return cadenaIn;
+		return cadena;
 	}
 
 	// Metodo para recorrido posorden IDR
 	private String posOrden(NodoArbol subArbol, String c) {
+		String cadena = "";
 		if (subArbol != null) {
-			cadenaPos = c + posOrden(subArbol.getSubArbolIzquierdo(), c)+ " , " + posOrden(subArbol.getSubArbolDerecho(), c)
+			cadena = c + posOrden(subArbol.getSubArbolIzquierdo(), c)+ "-" + posOrden(subArbol.getSubArbolDerecho(), c)
 					+ subArbol.getDatoNodo().toString();
 		}
-		return cadenaPos;
+		return cadena;
 	}
 
 	public String toString(int a) {
@@ -128,9 +133,10 @@ public class ArbolBinExp {
 		PilaArbolExpresion pilaExpresiones;
 
 		NodoArbol charIndividualValor;
-		NodoArbol op1;
-		NodoArbol op2;
-		NodoArbol op;
+		NodoArbol expresionUno;
+		NodoArbol expresionDos;
+		NodoArbol operador;
+		boolean masDigitos = false;
 
 		pilaOperadores = new PilaArbolExpresion();
 		pilaExpresiones = new PilaArbolExpresion();
@@ -139,10 +145,22 @@ public class ArbolBinExp {
 
 		for (int i = 0; i < cadena.length(); i++) {
 			caracterEvaluado = cadena.charAt(i);
+			System.out.println("Caracter evaluado :" + caracterEvaluado );
 			charIndividualValor = new NodoArbol(caracterEvaluado);
 			if (!esOperador(caracterEvaluado)) {// Es un número
-				pilaExpresiones.push(charIndividualValor);
+				if(!masDigitos) {
+					masDigitos = true;
+					pilaExpresiones.push(charIndividualValor);
+				}else {
+					String temporal = pilaExpresiones.pop().getDatoNodo().toString();
+					temporal = temporal + caracterEvaluado;
+					charIndividualValor = new NodoArbol(temporal);
+					pilaExpresiones.push(charIndividualValor);
+					
+				}
+				
 			} else { // Es un operador
+				masDigitos = false;
 				switch (caracterEvaluado) {
 				case '(':
 					pilaOperadores.push(charIndividualValor);
@@ -153,66 +171,69 @@ public class ArbolBinExp {
 																												// posicion
 																												// en la
 																												// pila
-						op2 = pilaExpresiones.pop();
-						op1 = pilaExpresiones.pop();
-						op = pilaOperadores.pop();
-						op = creaSubArbol(op1, op2, op);
-						pilaExpresiones.push(op);
+						expresionDos = pilaExpresiones.pop();
+						expresionUno = pilaExpresiones.pop();
+						operador = pilaOperadores.pop();
+						operador = creaSubArbol(expresionDos, expresionUno, operador);
+						pilaExpresiones.push(operador);
 					}
 					pilaOperadores.pop();
 					break;
 				default:
 					while (!pilaOperadores.esVacia() && prioridad(caracterEvaluado) <= prioridad(
 							pilaOperadores.topePila().getDatoNodo().toString().charAt(0))) {
-						op2 = pilaExpresiones.pop();
-						op1 = pilaExpresiones.pop();
-						op = pilaOperadores.pop();
-						op = creaSubArbol(op1, op2, op);
-						pilaExpresiones.push(op);
+						expresionDos = pilaExpresiones.pop();
+						expresionUno = pilaExpresiones.pop();
+						operador = pilaOperadores.pop();
+						operador = creaSubArbol(expresionDos, expresionUno, operador);
+						pilaExpresiones.push(operador);
 					}
 					pilaOperadores.push(charIndividualValor);// Insertar el caracter que estoy comparando
 				}
 			}
-			while (!pilaOperadores.esVacia()) {// Todavía existen elemetos en la pila
-				op2 = pilaExpresiones.pop();
-				op1 = pilaExpresiones.pop();
-				op = pilaOperadores.pop();
-				op = creaSubArbol(op1, op2, op);
-				pilaExpresiones.push(op);
-			}
 		}
-		op = pilaExpresiones.pop();
-		return op;
+		while (!pilaOperadores.esVacia()) {// Todavía existen elemetos en la pila
+			expresionDos = pilaExpresiones.pop();
+			expresionUno = pilaExpresiones.pop();
+			operador = pilaOperadores.pop();
+			operador = creaSubArbol(expresionDos, expresionUno, operador);
+			pilaExpresiones.push(operador);
+		}
+		operador = pilaExpresiones.pop();
+		return operador;
 	}
 
 	public double evaluaExpresion() {
 		return evalua(raiz);
 	}
 
+	public void paint(Graphics g) {
+		
+	}
 	private double evalua(NodoArbol subArbol) {
-		double count = 0;
+		double resultado = 0;
 		if (!esOperador(subArbol.getDatoNodo().toString().charAt(0))) {
 			return Double.parseDouble(subArbol.getDatoNodo().toString());
 		} else {
 			switch (subArbol.getDatoNodo().toString().charAt(0)) {
 			case '^':
-				count = count
+				resultado = resultado
 						+ Math.pow(evalua(subArbol.getSubArbolIzquierdo()), evalua(subArbol.getSubArbolDerecho()));//pow es la elevación 
 				break;
 			case '*':
-				count = count + evalua(subArbol.getSubArbolIzquierdo()) * evalua(subArbol.getSubArbolDerecho());
+				resultado = resultado + evalua(subArbol.getSubArbolIzquierdo()) * evalua(subArbol.getSubArbolDerecho());
 				break;
 			case '/':
-				count = count + evalua(subArbol.getSubArbolIzquierdo()) / evalua(subArbol.getSubArbolDerecho());
+				resultado = resultado + evalua(subArbol.getSubArbolIzquierdo()) / evalua(subArbol.getSubArbolDerecho());
 				break;
 			case '+':
-				count = count + evalua(subArbol.getSubArbolIzquierdo()) + evalua(subArbol.getSubArbolDerecho());
+				resultado = resultado + evalua(subArbol.getSubArbolIzquierdo()) + evalua(subArbol.getSubArbolDerecho());
 				break;
 			case '-':
-				count = count + evalua(subArbol.getSubArbolIzquierdo()) - evalua(subArbol.getSubArbolDerecho());
+				resultado = resultado + evalua(subArbol.getSubArbolIzquierdo()) - evalua(subArbol.getSubArbolDerecho());
 				break;
 			}
 		}
-		return count;
+		return resultado;
 	}
 }
