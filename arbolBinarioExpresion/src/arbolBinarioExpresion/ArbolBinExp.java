@@ -47,9 +47,8 @@ public class ArbolBinExp {
 		String cadena = "";
 		System.out.println( "c +"+ c );
 		if(subArbol != null) {
-			cadena = c + subArbol.getDatoNodo().toString() + "-" + preOrden(subArbol.getSubArbolIzquierdo(), c)
+			cadena = c + subArbol.getDatoNodo().toString() + " " + preOrden(subArbol.getSubArbolIzquierdo(), c)
 				+ preOrden(subArbol.getSubArbolDerecho(), c);
-			System.out.println( "c +"+ c );
 		}
 		return cadena;
 	}
@@ -58,7 +57,7 @@ public class ArbolBinExp {
 	private String inOrden(NodoArbol subArbol, String c) {
 		String cadena = "";
 		if (subArbol != null) {
-			cadena = c + inOrden(subArbol.getSubArbolIzquierdo(), c) + "-" + subArbol.getDatoNodo().toString()
+			cadena = c + inOrden(subArbol.getSubArbolIzquierdo(), c) + " " + subArbol.getDatoNodo().toString()
 					+ inOrden(subArbol.getSubArbolDerecho(), c);
 		}
 		return cadena;
@@ -68,7 +67,7 @@ public class ArbolBinExp {
 	private String posOrden(NodoArbol subArbol, String c) {
 		String cadena = "";
 		if (subArbol != null) {
-			cadena = c + posOrden(subArbol.getSubArbolIzquierdo(), c)+ "-" + posOrden(subArbol.getSubArbolDerecho(), c)
+			cadena = c + posOrden(subArbol.getSubArbolIzquierdo(), c)+ " " + posOrden(subArbol.getSubArbolDerecho(), c)
 					+ subArbol.getDatoNodo().toString();
 		}
 		return cadena;
@@ -108,23 +107,11 @@ public class ArbolBinExp {
 		}
 		return p;
 	}
-
-	private boolean esOperador(char operador) {
+	
+	//Funcion que verifica si es un operador
+	private static boolean esOperador(char operador) {
 		boolean resultado;
-		switch (operador) {
-		case '(':
-		case ')':
-		case '^':
-		case '*':
-		case '/':
-		case '+':
-		case '-':
-			resultado = true;
-			break;
-		default:
-			resultado = false;
-		}
-		return resultado;
+		 return operador == '+' || operador == '-' || operador == '*' || operador == '/' || operador == '('  || operador == ')' || operador == '^';
 	}
 
 	private NodoArbol creaArboBinExp(String cadena) {
