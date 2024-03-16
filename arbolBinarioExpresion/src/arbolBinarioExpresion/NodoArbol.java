@@ -1,9 +1,10 @@
 package arbolBinarioExpresion;
 
 /**
- * @author JennyMorales 7690-08-6790
+ * @author JennyMorales 7690-08-6790 - CristianMelgar 7690-21-8342
  */
 public class NodoArbol {
+	
 	private NodoArbol subArbolDerecho;
 	private NodoArbol subArbolIzquierdo;
 	private char datoNodo;

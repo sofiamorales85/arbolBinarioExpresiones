@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 import java.awt.Graphics;
 
 /**
- * @author JennyMorales 7690-08-6790
+ * @author JennyMorales 7690-08-6790 - CristianMelgar 7690-21-8342
  */
 public class ArbolBinExp {
 	NodoArbol raiz;
@@ -33,12 +33,16 @@ public class ArbolBinExp {
 	}
 
 	// Para verificar si el arbol esta vacio
-	public boolean arbolVacio() {
+	/**public boolean arbolVacio() {
 		if (raiz == null) {
 			return true;
 		} else {
 			return false;
 		}
+	}
+	*/
+	public boolean arbolVacio() {
+		return raiz == null;
 	}
 
 	public int nodosCompletos(NodoArbol subArbol) {

@@ -20,7 +20,9 @@ import javax.swing.UIManager;
 import java.awt.Font;
 import java.awt.Component;
 import java.awt.Cursor;
-
+/**
+ * @author JennyMorales 7690-08-6790 - CristianMelgar 7690-21-8342
+ */
 public class InterfazArbolBinarioExpresiones extends JFrame {
 
 	private JPanel contentPane;
@@ -183,6 +185,22 @@ public class InterfazArbolBinarioExpresiones extends JFrame {
 		btnSalir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnSalir.setBounds(891, 34, 85, 21);
 		contentPane.add(btnSalir);
+		
+		JButton btnNewButton = new JButton("Forma Gráfica");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dibujo diagramaDibujo = new dibujo();
+				String cadena=expresion.getText();
+				ArbolBinExp arbolBinExpresion = new ArbolBinExp(cadena);
+				diagramaDibujo.setArbol(arbolBinExpresion);
+				JFrame ventana = new JFrame();
+				ventana.getContentPane().add(diagramaDibujo);
+				ventana.setSize(800,600);
+				ventana.setVisible(true);
+			}
+		});
+		btnNewButton.setBounds(67, 379, 118, 23);
+		contentPane.add(btnNewButton);
 		
 
 	}
