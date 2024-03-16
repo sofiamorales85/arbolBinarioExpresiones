@@ -97,8 +97,8 @@ public class InterfazArbolBinarioExpresiones extends JFrame {
 		mensaje.setForeground(new Color(153, 51, 0));
 		mensaje.setBackground(new Color(204, 51, 0));
 		mensaje.setFont(new Font("Lucida Sans Unicode", Font.BOLD | Font.ITALIC, 11));
-		mensaje.setHorizontalAlignment(SwingConstants.TRAILING);
-		mensaje.setBounds(42, 404, 220, 34);
+		mensaje.setHorizontalAlignment(SwingConstants.LEFT);
+		mensaje.setBounds(35, 88, 368, 34);
 		contentPane.add(mensaje);
 		
 		JButton btnEvauar = new JButton("Evaluar");
@@ -106,6 +106,7 @@ public class InterfazArbolBinarioExpresiones extends JFrame {
 		btnEvauar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String cadenaEntrada = expresion.getText();
+				validarTexto();
 				if(cadenaEntrada.equals("")) {
 					mensaje.setText("Debe ingresar una expresión");
 				}else {
@@ -115,16 +116,48 @@ public class InterfazArbolBinarioExpresiones extends JFrame {
 					inOrden.setText(arbolBinExpresion.toString(1));
 					posOrden.setText(arbolBinExpresion.toString(2));
 					double resultado = arbolBinExpresion.evaluaExpresion();
-					
-					textResultado.setText(String.valueOf(resultado));
-					
-					mensaje.setText("");
+			
+					textResultado.setText(String.valueOf(resultado));		
 				}
 			}
+			
+			//Función para validar los caracteres en la expresion ingresada
+			private void validarTexto() {
+				// TODO Auto-generated method stub
+				ArbolBinExp arbolBinExpresion = new ArbolBinExp();
+				String expresionUsuario = expresion.getText();
+		        boolean esInvalido = arbolBinExpresion.contieneCaracteresEspeciales(expresionUsuario);
+
+		        if (esInvalido) {
+		        	mensaje.setText("La expresión debe usar operadores válidos");
+					preOrden.setText("");
+					inOrden.setText("");
+					posOrden.setText("");
+					expresion.setText("");
+					textResultado.setText("");
+					
+		        } else {
+		        	mensaje.setText("");
+		        }
+			}
 		});
+		
 
 		btnEvauar.setBounds(35, 165, 85, 21);
 		contentPane.add(btnEvauar);
+		
+		
+		JLabel lblResultado = new JLabel("Resultado de evaluación:");
+		lblResultado.setFont(new Font("Lucida Sans Unicode", Font.PLAIN, 12));
+		lblResultado.setBounds(35, 258, 187, 24);
+		contentPane.add(lblResultado);
+		
+		textResultado = new JTextField();
+		textResultado.setBounds(35, 292, 202, 24);
+		contentPane.add(textResultado);
+		textResultado.setColumns(10);
+		textResultado.setEditable(false);
+		
 		
 		JButton btnLimpiar = new JButton("Limpiar");
 		btnLimpiar.addActionListener(new ActionListener() {
@@ -133,6 +166,8 @@ public class InterfazArbolBinarioExpresiones extends JFrame {
 				inOrden.setText("");
 				posOrden.setText("");
 				expresion.setText("");
+				textResultado.setText("");
+				mensaje.setText("");
 			}
 		});
 		btnLimpiar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -148,17 +183,6 @@ public class InterfazArbolBinarioExpresiones extends JFrame {
 		btnSalir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnSalir.setBounds(891, 34, 85, 21);
 		contentPane.add(btnSalir);
-		
-		JLabel lblResultado = new JLabel("Resultado de evaluación:");
-		lblResultado.setFont(new Font("Lucida Sans Unicode", Font.PLAIN, 12));
-		lblResultado.setBounds(35, 258, 187, 24);
-		contentPane.add(lblResultado);
-		
-		textResultado = new JTextField();
-		textResultado.setBounds(35, 292, 202, 24);
-		contentPane.add(textResultado);
-		textResultado.setColumns(10);
-		textResultado.setEditable(false);
 		
 
 	}

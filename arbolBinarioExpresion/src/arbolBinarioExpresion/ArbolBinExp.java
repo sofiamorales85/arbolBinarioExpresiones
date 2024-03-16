@@ -1,4 +1,6 @@
 package arbolBinarioExpresion;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import java.awt.Graphics;
 
@@ -7,8 +9,7 @@ import java.awt.Graphics;
  */
 public class ArbolBinExp {
 	NodoArbol raiz;
-	String cadenaIn , cadenaPre, cadenaPos = "";
-
+	
 	public ArbolBinExp() {
 		raiz = null;
 	}
@@ -54,12 +55,10 @@ public class ArbolBinExp {
 	// Metodo para el recorrido preorden RID
 	private String preOrden(NodoArbol subArbol, String c) {	
 		String cadena = "";
-		System.out.println( "cadena +"+ cadenaPre );
 		System.out.println( "c +"+ c );
 		if(subArbol != null) {
-			cadena = c + subArbol.getDatoNodo().toString() + "-" + preOrden(subArbol.getSubArbolIzquierdo(), c)
+			cadena = c + subArbol.getDatoNodo().toString() + " " + preOrden(subArbol.getSubArbolIzquierdo(), c)
 				+ preOrden(subArbol.getSubArbolDerecho(), c);
-			System.out.println( "c +"+ c );
 		}
 		return cadena;
 	}
@@ -68,7 +67,7 @@ public class ArbolBinExp {
 	private String inOrden(NodoArbol subArbol, String c) {
 		String cadena = "";
 		if (subArbol != null) {
-			cadena = c + inOrden(subArbol.getSubArbolIzquierdo(), c) + "-" + subArbol.getDatoNodo().toString()
+			cadena = c + inOrden(subArbol.getSubArbolIzquierdo(), c) + " " + subArbol.getDatoNodo().toString()
 					+ inOrden(subArbol.getSubArbolDerecho(), c);
 		}
 		return cadena;
@@ -78,7 +77,7 @@ public class ArbolBinExp {
 	private String posOrden(NodoArbol subArbol, String c) {
 		String cadena = "";
 		if (subArbol != null) {
-			cadena = c + posOrden(subArbol.getSubArbolIzquierdo(), c)+ "-" + posOrden(subArbol.getSubArbolDerecho(), c)
+			cadena = c + posOrden(subArbol.getSubArbolIzquierdo(), c)+ " " + posOrden(subArbol.getSubArbolDerecho(), c)
 					+ subArbol.getDatoNodo().toString();
 		}
 		return cadena;
@@ -118,23 +117,11 @@ public class ArbolBinExp {
 		}
 		return p;
 	}
-
-	private boolean esOperador(char operador) {
+	
+	//Funcion que verifica si es un operador
+	private static boolean esOperador(char operador) {
 		boolean resultado;
-		switch (operador) {
-		case '(':
-		case ')':
-		case '^':
-		case '*':
-		case '/':
-		case '+':
-		case '-':
-			resultado = true;
-			break;
-		default:
-			resultado = false;
-		}
-		return resultado;
+		 return operador == '+' || operador == '-' || operador == '*' || operador == '/' || operador == '('  || operador == ')' || operador == '^';
 	}
 
 	private NodoArbol creaArboBinExp(String cadena) {
@@ -218,9 +205,14 @@ public class ArbolBinExp {
 		return evalua(raiz);
 	}
 
-	public void paint(Graphics g) {
-		
-	}
+	//Función para validar caracteres en la expresion ingresada
+	 public static boolean contieneCaracteresEspeciales(String expresion) {
+	        // Patrón para buscar caracteres especiales
+	        Pattern patron = Pattern.compile("[&%$#\"!,:;.\\_{}\\[\\]´¿'?¡|]");
+	        Matcher matcher = patron.matcher(expresion);
+	        return matcher.find();
+	 }
+	
 	private double evalua(NodoArbol subArbol) {
 		double resultado = 0;
 		if (!esOperador(subArbol.getDatoNodo().toString().charAt(0))) {
