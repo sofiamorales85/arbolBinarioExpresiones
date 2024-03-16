@@ -93,6 +93,11 @@ public class InterfazArbolBinarioExpresiones extends JFrame {
 		lblNewLabel_3.setBounds(301, 319, 85, 24);
 		contentPane.add(lblNewLabel_3);
 		
+		JLabel lblNewLabel_4 = new JLabel("Notación Polaca ");
+		lblNewLabel_4.setFont(new Font("Lucida Sans Unicode", Font.PLAIN, 12));
+		lblNewLabel_4.setBounds(35, 323, 116, 18);
+		contentPane.add(lblNewLabel_4);
+		
 		JLabel mensaje = new JLabel("");
 		mensaje.setForeground(new Color(153, 51, 0));
 		mensaje.setBackground(new Color(204, 51, 0));
@@ -115,6 +120,7 @@ public class InterfazArbolBinarioExpresiones extends JFrame {
 					preOrden.setText(arbolBinExpresion.toString(0));
 					inOrden.setText(arbolBinExpresion.toString(1));
 					posOrden.setText(arbolBinExpresion.toString(2));
+					
 					double resultado = arbolBinExpresion.evaluaExpresion();
 			
 					textResultado.setText(String.valueOf(resultado));		
@@ -183,6 +189,8 @@ public class InterfazArbolBinarioExpresiones extends JFrame {
 		btnSalir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnSalir.setBounds(891, 34, 85, 21);
 		contentPane.add(btnSalir);
+		
+		
 		
 
 	}
