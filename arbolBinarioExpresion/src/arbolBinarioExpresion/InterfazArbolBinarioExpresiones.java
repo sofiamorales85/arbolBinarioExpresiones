@@ -118,8 +118,9 @@ public class InterfazArbolBinarioExpresiones extends JFrame {
 					inOrden.setText(arbolBinExpresion.toString(1));
 					posOrden.setText(arbolBinExpresion.toString(2));
 					double resultado = arbolBinExpresion.evaluaExpresion();
-			
-					textResultado.setText(String.valueOf(resultado));		
+					
+					textResultado.setText(String.valueOf(resultado));	
+
 				}
 			}
 			
@@ -186,8 +187,8 @@ public class InterfazArbolBinarioExpresiones extends JFrame {
 		btnSalir.setBounds(891, 34, 85, 21);
 		contentPane.add(btnSalir);
 		
-		JButton btnNewButton = new JButton("Forma Gráfica");
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton btnGrafica = new JButton("Forma Gráfica");
+		btnGrafica.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dibujo diagramaDibujo = new dibujo();
 				String cadena=expresion.getText();
@@ -199,8 +200,8 @@ public class InterfazArbolBinarioExpresiones extends JFrame {
 				ventana.setVisible(true);
 			}
 		});
-		btnNewButton.setBounds(67, 379, 118, 23);
-		contentPane.add(btnNewButton);
+		btnGrafica.setBounds(67, 379, 118, 23);
+		contentPane.add(btnGrafica);
 		
 
 	}

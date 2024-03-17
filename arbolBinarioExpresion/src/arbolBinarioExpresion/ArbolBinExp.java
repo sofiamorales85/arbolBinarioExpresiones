@@ -60,7 +60,6 @@ public class ArbolBinExp {
 	// Metodo para el recorrido preorden RID
 	private String preOrden(NodoArbol subArbol, String c) {	
 		String cadena = "";
-		System.out.println( "c +"+ c );
 		if(subArbol != null) {
 			cadena = c + subArbol.getDatoNodo().toString() + " " + preOrden(subArbol.getSubArbolIzquierdo(), c)
 				+ preOrden(subArbol.getSubArbolDerecho(), c);
@@ -87,7 +86,6 @@ public class ArbolBinExp {
 		}
 		return cadena;
 	}
-	
 
 	public String toString(int a) {
 		String cadena = "";
