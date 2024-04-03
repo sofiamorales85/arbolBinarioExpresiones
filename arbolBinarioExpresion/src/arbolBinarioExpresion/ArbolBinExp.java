@@ -23,7 +23,7 @@ public class ArbolBinExp {
 		raiz = null;
 	}
 
-	public void creaNodo(char dato) {
+	public void creaNodo(String dato) {
 		raiz = new NodoArbol(dato);
 	}
 
@@ -103,17 +103,17 @@ public class ArbolBinExp {
 		return cadena;
 	}
 
-	private static int prioridad(char c) {
+	private static int prioridad(String c) {
 		int p = 100;
 		switch (c) {
-		case '^':
+		case "^":
 			p = 3;
 			break;
-		case '*':
-		case '/':
+		case "*":
+		case "/":
 			p = 2;
-		case '+':
-		case '-':
+		case "+":
+		case "-":
 			p = 1;
 			break;
 		default:
@@ -129,8 +129,8 @@ public class ArbolBinExp {
  	}
  	 
 	//Funcion que verifica si es un operador
-	private static boolean esOperador(char operador) {
-		 return operador == '+' || operador == '-' || operador == '*' || operador == '/' || operador == '('  || operador == ')' || operador == '^';
+	private static boolean esOperador(String operador) {
+		 return operador.equals("+") || operador.equals("-") || operador.equals("*") || operador.equals("/") || operador.equals("(")  || operador.equals(")") || operador.equals("^");
 	}
 
 	private NodoArbol creaArboBinExp(String cadena) {
@@ -146,12 +146,29 @@ public class ArbolBinExp {
 
 		pilaOperadores = new PilaArbolExpresion();
 		pilaExpresiones = new PilaArbolExpresion();
-		// Sirve para identifiar si es un operador o un numero
-		char caracterEvaluado;
+		// Sirve para identificar si es un operador o un numero
+		String caracterEvaluado;
 
 		for (int i = 0; i < cadena.length(); i++) {
-			caracterEvaluado = cadena.charAt(i);
+			caracterEvaluado =  String.valueOf(cadena.charAt(i));
 			System.out.println("Caracter evaluado :" + caracterEvaluado );
+			
+			if (i == 0 && caracterEvaluado.equals("-")) {//Si el primer caracter es negativo
+				caracterEvaluado = "" + String.valueOf(cadena.charAt(i));
+				String digito = String.valueOf(cadena.charAt(i+1));
+				caracterEvaluado = caracterEvaluado + digito;		
+				System.out.println("Caracter evaluado " + caracterEvaluado);
+				i++; //Incrementa en 1 para el siguiente caracter
+			}else if(esNumero(""+caracterEvaluado.charAt(i)) && esNumero("" + caracterEvaluado.charAt(i+1))) {//Si es mas de un digito
+				String digitoConcat ="" + caracterEvaluado.charAt(i+1);
+				caracterEvaluado =  caracterEvaluado +  digitoConcat;
+				System.out.println("Caracter evaluado " + caracterEvaluado);
+			}else if(esOperador(""+caracterEvaluado.charAt(i)) && esOperador("" + caracterEvaluado.charAt(i+1))) {
+				String opConcat ="" + caracterEvaluado.charAt(i+1);
+				caracterEvaluado = opConcat + "" + caracterEvaluado.charAt(i+2);
+				System.out.println("Caracter evaluado " + caracterEvaluado);
+			}
+						
 			charIndividualValor = new NodoArbol(caracterEvaluado);
 			if (!esOperador(caracterEvaluado)) {// Es un número
 				
@@ -169,15 +186,11 @@ public class ArbolBinExp {
 			} else { // Es un operador
 				masDigitos = false;
 				switch (caracterEvaluado) {
-				case '(':
+				case "(":
 					pilaOperadores.push(charIndividualValor);
 					break;
-				case ')':
-					while (!pilaOperadores.esVacia() && !pilaOperadores.topePila().getDatoNodo().equals('(')) {// Buscamos 
-																												// la
-																												// posicion
-																												// en la
-																												// pila
+				case ")":
+					while (!pilaOperadores.esVacia() && !pilaOperadores.topePila().getDatoNodo().equals("(")) {// Buscamos la posicion en la pila
 						expresionDos = pilaExpresiones.pop();
 						expresionUno = pilaExpresiones.pop();
 						operador = pilaOperadores.pop();
@@ -187,8 +200,7 @@ public class ArbolBinExp {
 					pilaOperadores.pop();
 					break;
 				default:
-					while (!pilaOperadores.esVacia() && prioridad(caracterEvaluado) <= prioridad(
-							pilaOperadores.topePila().getDatoNodo().toString().charAt(0))) {
+					while (!pilaOperadores.esVacia() && prioridad(caracterEvaluado) <= prioridad(pilaOperadores.topePila().getDatoNodo())) {
 						expresionDos = pilaExpresiones.pop();
 						expresionUno = pilaExpresiones.pop();
 						operador = pilaOperadores.pop();
@@ -223,9 +235,13 @@ public class ArbolBinExp {
 	 }
 	
 	private double evalua(NodoArbol subArbol) {
-		char operador = subArbol.getDatoNodo().toString().charAt(0);
-	    double resultado = 0;
+		if (subArbol == null) {
+	        throw new IllegalArgumentException("El nodo de árbol es nulo.");
+	    }
 
+		String operador = subArbol.getDatoNodo();
+	    double resultado = 0;
+		
 	    if (!esOperador(operador)) {
 	        return Double.parseDouble(subArbol.getDatoNodo().toString());
 	    } else {
@@ -233,22 +249,22 @@ public class ArbolBinExp {
 	        double derecho = evalua(subArbol.getSubArbolDerecho());
 
 	        switch (operador) {
-	            case '^':
-	                resultado = Math.pow(izquierdo, derecho);
+	            case "^":
+	                resultado = Math.pow(izquierdo, derecho);//pow es la elevación
 	                break;
-	            case '*':
+	            case "*":
 	                resultado = izquierdo * derecho;
 	                break;
-	            case '/':
+	            case "/":
 	                if (derecho == 0) {
 	                    throw new ArithmeticException("División por cero.");
 	                }
 	                resultado = izquierdo / derecho;
 	                break;
-	            case '+':
+	            case "+":
 	                resultado = izquierdo + derecho;
 	                break;
-	            case '-':
+	            case "-":
 	                resultado = izquierdo - derecho;
 	                break;
 	            default:

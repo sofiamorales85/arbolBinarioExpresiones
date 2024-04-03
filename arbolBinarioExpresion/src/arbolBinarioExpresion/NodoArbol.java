@@ -7,18 +7,14 @@ public class NodoArbol {
 	
 	private NodoArbol subArbolDerecho;
 	private NodoArbol subArbolIzquierdo;
-	private char datoNodo;
+	private String datoNodo;
 	
 	
-	public NodoArbol(char caracterEvaluado) {
-		// TODO Auto-generated constructor stub
+	public NodoArbol(String caracterEvaluado) {
+		// TODO Auto-generated constructor
 		this.datoNodo = caracterEvaluado;
 		this.subArbolDerecho = null;
 		this.subArbolIzquierdo = null;
-	}
-
-	public NodoArbol(String temporal) {
-		// TODO Auto-generated constructor stub
 	}
 
 	public NodoArbol getSubArbolDerecho() {
@@ -41,12 +37,12 @@ public class NodoArbol {
 	}
 
 
-	public Object getDatoNodo() {
+	public String getDatoNodo() {
 		return datoNodo;
 	}
 
 
-	public void setDatoNodo(char caracterEvaluado) {
+	public void setDatoNodo(String caracterEvaluado) {
 		this.datoNodo = caracterEvaluado;
 	}	
 }

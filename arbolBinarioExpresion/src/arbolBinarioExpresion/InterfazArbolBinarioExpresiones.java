@@ -156,7 +156,7 @@ public class InterfazArbolBinarioExpresiones extends JFrame {
 		contentPane.add(lblResultado);
 		
 		textResultado = new JTextField();
-		textResultado.setBounds(35, 292, 202, 24);
+		textResultado.setBounds(35, 292, 202, 34);
 		contentPane.add(textResultado);
 		textResultado.setColumns(10);
 		textResultado.setEditable(false);
