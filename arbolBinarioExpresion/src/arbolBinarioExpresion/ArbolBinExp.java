@@ -153,22 +153,26 @@ public class ArbolBinExp {
 			caracterEvaluado =  String.valueOf(cadena.charAt(i));
 			System.out.println("Caracter evaluado :" + caracterEvaluado );
 			
-			if (i == 0 && caracterEvaluado.equals("-")) {//Si el primer caracter es negativo
+			//Si el primer caracter es negativo
+			if (i == 0 && caracterEvaluado.equals("-")) {
 				caracterEvaluado = "" + String.valueOf(cadena.charAt(i));
 				String digito = String.valueOf(cadena.charAt(i+1));
 				caracterEvaluado = caracterEvaluado + digito;		
 				System.out.println("Caracter evaluado " + caracterEvaluado);
 				i++; //Incrementa en 1 para el siguiente caracter
-			}else if(esNumero(""+caracterEvaluado.charAt(i)) && esNumero("" + caracterEvaluado.charAt(i+1))) {//Si es mas de un digito
-				String digitoConcat ="" + caracterEvaluado.charAt(i+1);
-				caracterEvaluado =  caracterEvaluado +  digitoConcat;
-				System.out.println("Caracter evaluado " + caracterEvaluado);
-			}else if(esOperador(""+caracterEvaluado.charAt(i)) && esOperador("" + caracterEvaluado.charAt(i+1))) {
-				String opConcat ="" + caracterEvaluado.charAt(i+1);
-				caracterEvaluado = opConcat + "" + caracterEvaluado.charAt(i+2);
-				System.out.println("Caracter evaluado " + caracterEvaluado);
 			}
-						
+					
+			if(i + 1 < cadena.length()){
+				//Si el siguiente caracter es un numero los concatena 
+				if(esNumero(String.valueOf(cadena.charAt(i))) && esNumero(String.valueOf(cadena.charAt(i+1)))) {
+					String digitoConcat ="" + cadena.charAt(i+1);
+					caracterEvaluado =  caracterEvaluado +  digitoConcat;
+					System.out.println("Caracter evaluado " + caracterEvaluado);
+					i++;
+				}
+			}
+			
+			
 			charIndividualValor = new NodoArbol(caracterEvaluado);
 			if (!esOperador(caracterEvaluado)) {// Es un número
 				
